@@ -21,6 +21,18 @@ public class Client implements Serializable {
     private int quantityOfPurchases;
     private String address;
 
+    public Client() {
+
+    }
+
+    public Client(long id, String firstName, String lastName, int documentNumber, int quantityOfPurchases, String address) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.documentNumber = documentNumber;
+        this.quantityOfPurchases = quantityOfPurchases;
+        this.address = address;
+    }
     public long getId() {
         return id;
     }
@@ -66,15 +78,6 @@ public class Client implements Serializable {
     }
 
     public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Client(long id, String firstName, String lastName, int documentNumber, int quantityOfPurchases, String address) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.documentNumber = documentNumber;
-        this.quantityOfPurchases = quantityOfPurchases;
         this.address = address;
     }
 

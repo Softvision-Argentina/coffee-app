@@ -12,7 +12,7 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    /**Inicio de la lógica de servicio**/
+    /**logic service section**/
 
     public Iterable<Client> getAllClients() {
         return clientRepository.findAll();
@@ -23,6 +23,7 @@ public class ClientService {
     }
 
     public Client updateClient(long clientId, Client client) {
+        client.setId(clientId);
         Client updatedClient = clientRepository.save(client);
         return updatedClient;
     }
