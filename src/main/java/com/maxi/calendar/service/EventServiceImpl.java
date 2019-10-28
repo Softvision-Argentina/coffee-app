@@ -1,22 +1,26 @@
 package com.maxi.calendar.service;
 
 import java.util.Date;
+import java.util.List;
 
 import com.maxi.calendar.model.Event;
 import com.maxi.calendar.model.User;
+import com.maxi.calendar.repository.EventRepository;
+import com.maxi.calendar.repository.UserRepository;
 
 public class EventServiceImpl implements IEventService {
+	
+	EventRepository eventRepository;
+	UserRepository  userRepository;
 
 	@Override
-	public Event getAllEvents() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Event> getAllEvents() {
+		return eventRepository.findAll();
 	}
 
 	@Override
 	public Event getEvent(String nameEvent) {
-		// TODO Auto-generated method stub
-		return null;
+		return eventRepository.findByName(nameEvent);
 	}
 
 	@Override
@@ -27,25 +31,30 @@ public class EventServiceImpl implements IEventService {
 
 	@Override
 	public void editEvent(String nameEvent) {
-		// TODO Auto-generated method stub
+		Event event = eventRepository.findByName(nameEvent);
+		eventRepository.save(event);
 
 	}
 
 	@Override
 	public void deleteEvent(String nameEvent) {
-		// TODO Auto-generated method stub
-
+		Event event = eventRepository.findByName(nameEvent);
+		eventRepository.delete(event);
 	}
 
 	@Override
 	public Event cancelEvent(String nameEvent) {
-		// TODO Auto-generated method stub
-		return null;
+		Event event = eventRepository.findByName(nameEvent);
+		event.setStatus(3);
+		return eventRepository.save(event);
 	}
 
 	@Override
 	public void addUserAtEvent(User user, String nameEvent) {
-		// TODO Auto-generated method stub
+		Event event = eventRepository.findByName(nameEvent);
+		User newUser = userRepository.findByName(newUser.getName());
+		
+		
 
 	}
 
@@ -62,9 +71,13 @@ public class EventServiceImpl implements IEventService {
 	}
 
 	@Override
-	public String setStatus(String nameEvent) {
-		// TODO Auto-generated method stub
-		return null;
+	public int setStatus(String nameEvent, int newStatus) {
+		Event event = eventRepository.findByName(nameEvent);
+		event.setStatus(newStatus);
+		eventRepository.save(event);
+		
+		return event.getStatus();
+		
 	}
 
 }

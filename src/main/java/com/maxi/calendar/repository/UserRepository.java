@@ -7,5 +7,7 @@ import com.maxi.calendar.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
+	
+	public User findByName(String name);
 
 }

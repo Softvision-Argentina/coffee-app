@@ -1,19 +1,25 @@
 package com.maxi.calendar.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.maxi.calendar.model.User;
+import com.maxi.calendar.repository.UserRepository;
 
 public class UserServiceImpl implements IUserService {
+	
+	UserRepository userRepository;
+	
+	List<User> users = new ArrayList<User>();
 
 	@Override
-	public User getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<User> getAllUsers() {
+		return userRepository.findAll();
 	}
 
 	@Override
 	public User getUser(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepository.findByName(name);
 	}
 
 	@Override
@@ -24,13 +30,14 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public void editUser(String name) {
-		// TODO Auto-generated method stub
-
+		User user = userRepository.findByName(name);
+		userRepository.save(user);
 	}
 
 	@Override
 	public void deleteUser(String name) {
-		// TODO Auto-generated method stub
+		User user = userRepository.findByName(name);
+		userRepository.delete(user);
 
 	}
 

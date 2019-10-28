@@ -1,6 +1,7 @@
 package com.maxi.calendar.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import com.maxi.calendar.model.User;
 @Service
 public interface IEventService {
 	
-	public Event getAllEvents();
+	public List<Event> getAllEvents();
 	
 	public Event getEvent(String nameEvent);
 	
@@ -28,6 +29,6 @@ public interface IEventService {
 	
 	public void editUserAtEvent(User user, String nameEvent);
 	
-	public String setStatus(String nameEvent);	
+	public int setStatus(String nameEvent, int status);	
 	
 }

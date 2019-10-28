@@ -8,4 +8,5 @@ import com.maxi.calendar.model.Event;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Integer> {
 
+	public Event findByName(String name);
 }
