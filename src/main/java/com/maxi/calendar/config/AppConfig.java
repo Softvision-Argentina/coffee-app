@@ -1,4 +1,4 @@
-package com.rest.maxitest.config;
+package com.maxi.calendar.config;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

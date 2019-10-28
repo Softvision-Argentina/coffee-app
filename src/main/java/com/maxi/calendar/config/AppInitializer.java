@@ -1,8 +1,8 @@
-package com.rest.maxitest.config;
+package com.maxi.calendar.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import com.rest.maxitest.config.AppConfig;
+import com.maxi.calendar.config.AppConfig;
 
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer{
 
