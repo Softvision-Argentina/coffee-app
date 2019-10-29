@@ -1,6 +1,7 @@
 package com.maxi.calendar.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 
@@ -12,10 +13,10 @@ public class Event {
 	private Date time;
 	private int status;
 	private String nameEvent;
-	private User users;
+	private List<User> users;
 	
 	//full optional constructor
-	public Event(Date date, Date time, int status, User users) {
+	public Event(Date date, Date time, int status, List<User> users) {
 		this.date=date;
 		this.time=time;
 		this.status=status;
@@ -23,9 +24,10 @@ public class Event {
 	}
 	
 	//"default" constructor for controller
-	public Event( Date date, Date time) {
+	public Event( Date date, Date time, String nameEvent) {
 		this.date = date;
 		this.time = time;
+		this.nameEvent=nameEvent;
 	}
 
 	//getters & setters
@@ -68,12 +70,12 @@ public class Event {
 	public void setNameEvent(String nameEvent) {
 		this.nameEvent = nameEvent;
 	}
-	
-	public User getUsers() {
+
+	public List<User> getUsers() {
 		return users;
 	}
-	
-	public void setUsers(User users) {
+
+	public void setUsers(List<User> users) {
 		this.users = users;
 	}
 	

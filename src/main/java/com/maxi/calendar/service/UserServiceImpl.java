@@ -3,9 +3,12 @@ package com.maxi.calendar.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.maxi.calendar.model.User;
 import com.maxi.calendar.repository.UserRepository;
 
+@Service
 public class UserServiceImpl implements IUserService {
 	
 	UserRepository userRepository;
@@ -24,8 +27,8 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public User createUser(String name, String role) {
-		// TODO Auto-generated method stub
-		return null;
+		User newUser = new User(name, role);
+		return userRepository.save(newUser);
 	}
 
 	@Override

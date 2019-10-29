@@ -23,12 +23,11 @@ public interface IEventService {
 	
 	public Event cancelEvent(String nameEvent);
 	
+	public int setStatus(String nameEvent, int status);	
+	
 	public void addUserAtEvent(User user, String nameEvent);
 	
 	public void deleteUserAtEvent(User user, String nameEvent);
 	
-	public void editUserAtEvent(User user, String nameEvent);
-	
-	public int setStatus(String nameEvent, int status);	
 	
 }
