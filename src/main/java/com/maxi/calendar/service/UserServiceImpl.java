@@ -32,14 +32,12 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public void editUser(String name) {
-		User user = userRepository.findByName(name);
+	public void editUser(User user) {
 		userRepository.save(user);
 	}
 
 	@Override
-	public void deleteUser(String name) {
-		User user = userRepository.findByName(name);
+	public void deleteUser(User user) {
 		userRepository.delete(user);
 
 	}

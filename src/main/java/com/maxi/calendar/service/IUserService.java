@@ -15,9 +15,9 @@ public interface IUserService {
 	
 	public User createUser(String name, String role);
 	
-	public void editUser(String name);
+	public void editUser(User user);
 	
-	public void deleteUser(String name);
+	public void deleteUser(User user);
 	
 
 }
