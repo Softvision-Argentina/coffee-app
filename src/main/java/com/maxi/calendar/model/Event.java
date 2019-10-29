@@ -3,6 +3,7 @@ package com.maxi.calendar.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
@@ -14,6 +15,10 @@ public class Event {
 	private int status;
 	private String nameEvent;
 	private List<User> users;
+	
+	public Event() {
+		
+	}
 	
 	//full optional constructor
 	public Event(Date date, Date time, int status, List<User> users) {
@@ -63,6 +68,7 @@ public class Event {
 		this.status = status;
 	}
 	
+	@Column(name="name")
 	public String getNameEvent() {
 		return nameEvent;
 	}

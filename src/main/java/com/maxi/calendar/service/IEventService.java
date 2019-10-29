@@ -17,17 +17,15 @@ public interface IEventService {
 	
 	public Event createEvent(Date date, Date time, String nameEvent);
 	
-	public void editEvent(String nameEvent);
+	public void editEvent(Event event);
 	
-	public void deleteEvent(String nameEvent);
+	public void deleteEvent(Event event);
 	
-	public Event cancelEvent(String nameEvent);
-	
-	public int setStatus(String nameEvent, int status);	
+	public int setStatus(Event event);	
 	
 	public void addUserAtEvent(User user, String nameEvent);
 	
-	public void deleteUserAtEvent(User user, String nameEvent);
+	public void deleteUserAtEvent(User user, Event event);
 	
 	
 }

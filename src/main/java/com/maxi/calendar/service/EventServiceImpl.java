@@ -33,29 +33,18 @@ public class EventServiceImpl implements IEventService {
 	}
 
 	@Override
-	public void editEvent(String nameEvent) {
-		Event event = eventRepository.findByName(nameEvent);
+	public void editEvent(Event event) {
 		eventRepository.save(event);
-
 	}
 
 	@Override
-	public void deleteEvent(String nameEvent) {
-		Event event = eventRepository.findByName(nameEvent);
+	public void deleteEvent(Event event) {
+		
 		eventRepository.delete(event);
 	}
 
 	@Override
-	public Event cancelEvent(String nameEvent) {
-		Event event = eventRepository.findByName(nameEvent);
-		event.setStatus(3);
-		return eventRepository.save(event);
-	}
-	
-	@Override
-	public int setStatus(String nameEvent, int newStatus) {
-		Event event = eventRepository.findByName(nameEvent);
-		event.setStatus(newStatus);
+	public int setStatus(Event event) {
 		eventRepository.save(event);
 		
 		return event.getStatus();
@@ -64,16 +53,15 @@ public class EventServiceImpl implements IEventService {
 
 	@Override
 	public void addUserAtEvent(User user, String nameEvent) {
-		Event event = eventRepository.findByName(nameEvent);
-		User newUser = userRepository.findByName(user.getName());
+		
 		
 		event.getUsers().add(newUser);		
+		
 
 	}
 
 	@Override
-	public void deleteUserAtEvent(User user, String nameEvent) {
-		Event event = eventRepository.findByName(nameEvent);
+	public void deleteUserAtEvent(User user, Event event) {
 		event.getUsers().remove(user);
 
 	}
