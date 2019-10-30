@@ -16,7 +16,7 @@ import com.maxi.calendar.service.IUserService;
 public class EventController {
 	
 	IEventService eventService;
-	IUserService  userService;
+	IUserService		userService;
 	
 	Event event = new Event();
 	User user = new User();
@@ -92,7 +92,7 @@ public class EventController {
 		
 		return printError="No existe evento";
 	}
-
+	
 	public String  addUserAtEvent(String nameUser, String nameEvent) {
 		
 		event = eventService.getEvent(nameEvent);
@@ -103,7 +103,9 @@ public class EventController {
 			return printError="Nor event or user exists";
 		}
 		
-		event.setUsers(users.add(user));
+		eventService.insertUserAndEvent(user.getId(), event.getId());
+		
+		return "OK";
 	}
 	
 	public String  deleteUserAtEvent(String nameUser, String nameEvent) {
@@ -116,14 +118,17 @@ public class EventController {
 			return printError="Nor event or user exists";
 		}
 		
-		for(User userF : event.getUsers()) {
-			if (userF.getName().equals(user.getName())){
-				
-				eventService.deleteUserAtEvent(userF, event);
-				
-				return "User removed from event";
-			}
-		}
+		eventService.deleteUserAndEvent(user.getId(), event.getId());
+		
+		return "OK";
+//		for(User userF : event.getUsers()) {
+//			if (userF.getName().equals(user.getName())){
+//				
+//				eventService.deleteUserAtEvent(userF, event);
+//				
+//				return "User removed from event";
+//			}
+//		}
 	}
 
 

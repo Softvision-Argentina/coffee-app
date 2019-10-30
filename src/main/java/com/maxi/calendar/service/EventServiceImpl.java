@@ -50,20 +50,18 @@ public class EventServiceImpl implements IEventService {
 		return event.getStatus();
 		
 	}
-
+	
 	@Override
-	public void addUserAtEvent(User user, String nameEvent) {
-		
-		
-		event.getUsers().add(newUser);		
-		
+	public void insertUserAndEvent(int userId, int eventId) {
+		eventRepository.addUserToEvent(userId, eventId);
 
 	}
 
 	@Override
-	public void deleteUserAtEvent(User user, Event event) {
-		event.getUsers().remove(user);
+	public void deleteUserAndEvent(int userId, int eventId) {
+		eventRepository.removeUserFromEvent(userId, eventId);
 
 	}
+
 
 }

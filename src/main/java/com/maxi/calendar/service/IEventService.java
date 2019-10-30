@@ -23,9 +23,8 @@ public interface IEventService {
 	
 	public int setStatus(Event event);	
 	
-	public void addUserAtEvent(User user, String nameEvent);
+	public void insertUserAndEvent(int userId, int eventId);
 	
-	public void deleteUserAtEvent(User user, Event event);
-	
+	public void deleteUserAndEvent(int userId, int eventId);
 	
 }

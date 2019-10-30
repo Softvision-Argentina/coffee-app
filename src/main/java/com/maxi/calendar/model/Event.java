@@ -1,10 +1,16 @@
 package com.maxi.calendar.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Event {
@@ -14,7 +20,12 @@ public class Event {
 	private Date time;
 	private int status;
 	private String nameEvent;
-	private List<User> users;
+	
+	@ManyToMany(cascade=CascadeType.ALL)
+	@JoinTable(name="event_user", 
+	joinColumns=@JoinColumn(name="event_id", referencedColumnName="id"),
+	inverseJoinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
+	private List<User> users = new ArrayList<>();
 	
 	public Event() {
 		
@@ -35,7 +46,8 @@ public class Event {
 		this.nameEvent=nameEvent;
 	}
 
-	//getters & setters
+	//getters & setters	
+	@Id
 	public int getId() {
 		return id;
 	}
