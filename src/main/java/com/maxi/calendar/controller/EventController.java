@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.maxi.calendar.model.Event;
 import com.maxi.calendar.model.User;
@@ -12,42 +18,54 @@ import com.maxi.calendar.repository.EventRepository;
 import com.maxi.calendar.service.IEventService;
 import com.maxi.calendar.service.IUserService;
 
-@Controller
+@RestController
+@RequestMapping("/events")
 public class EventController {
 	
-	IEventService eventService;
+	@Autowired
+	IEventService 		eventService;
+	@Autowired
 	IUserService		userService;
 	
 	Event event = new Event();
 	User user = new User();
 	List<User> users = new ArrayList<User>();
 	
-	String printError;
+	String printError = "ERROR AL PROCESAR SOLICITUD";
 	
-	public List<Event> getAll(){
+	@RequestMapping(value="/all", method=RequestMethod.GET)
+	public ResponseEntity<?> getAll(){
 		
-		return eventService.getAllEvents();
+		List<Event> events = eventService.getAllEvents();
+		if(events.isEmpty()) {
+			return new ResponseEntity<>("NO HAY EVENTOS", HttpStatus.OK);
+		}
+		return new ResponseEntity<>(events, HttpStatus.OK);
 	}
 	
-	public Event getEvent(String name) {
+	@RequestMapping(value="/{name}", method=RequestMethod.GET)
+	public ResponseEntity<?> getEvent(@PathVariable String name) {
 		
 		event = eventService.getEvent(name);
 		
-		if (event != null) {
-			return event;
+		if (event == null) {
+			return new ResponseEntity<>(printError, HttpStatus.OK);
 		}
 		
-		return printError="No existe evento";
+		return new ResponseEntity<>(event, HttpStatus.OK);
 		
 	}
 	
-	public Event addEvent(Date date, Date time, String nameEvent) {
+	@RequestMapping(value="/new/{date}/{time}/{nameEvent}", method=RequestMethod.POST)
+	public ResponseEntity<?> addEvent(@PathVariable Date date, @PathVariable Date time, @PathVariable String nameEvent) {
 		
-		return eventService.createEvent(date, time, nameEvent);
+		event = eventService.createEvent(date, time, nameEvent);
 		
+		return new ResponseEntity<>(event, HttpStatus.OK);
 	}
 	
-	public void editEvent(String name, Date date, Date time, int status) {
+	@RequestMapping(value="/mod/{name}/{date}/{time}/{status}", method=RequestMethod.PUT)
+	public ResponseEntity<?> editEvent(@PathVariable String name, @PathVariable Date date, @PathVariable Date time, @PathVariable int status) {
 		
 		event = eventService.getEvent(name);
 		
@@ -64,71 +82,62 @@ public class EventController {
 			}
 			
 			eventService.editEvent(event);
+			return new ResponseEntity<>(event, HttpStatus.OK);
 		}
 		
-		printError="No existe evento";
+		return new ResponseEntity<>(printError, HttpStatus.OK);
 		
 	}
 	
-	public void deleteEvent(String name) {
+	@RequestMapping(value="/d/{name}", method=RequestMethod.DELETE)
+	public ResponseEntity<?> deleteEvent(@PathVariable String name) {
 		
-		event = eventService.getEvent(name);
-		
+		event = eventService.getEvent(name);		
 		if(event != null) {
 			eventService.deleteEvent(event);
+			return new ResponseEntity<>("DELETED", HttpStatus.OK);
 		}
+		return new ResponseEntity<>(printError, HttpStatus.OK);
 		
 	}
 
-	public String setEventStatus(String name, int status) { //both for cancel and status change
+	@RequestMapping(value="/modstatus/{name}/{status}", method=RequestMethod.PUT)
+	public ResponseEntity<?> setEventStatus(@PathVariable String name, @PathVariable int status) { //both for cancel and status change
 		
 		event = eventService.getEvent(name);
 		
 		if(event != null) {
 			event.setStatus(status);
 			eventService.setStatus(event);
-			return "Status changed";
-		}
-		
-		return printError="No existe evento";
+			return new ResponseEntity<>(event, HttpStatus.OK);
+		}	
+		return new ResponseEntity<>(printError, HttpStatus.OK);
 	}
 	
-	public String  addUserAtEvent(String nameUser, String nameEvent) {
+	@RequestMapping(value="/adduser/{nameUser}/{nameEvent}", method=RequestMethod.POST)
+	public ResponseEntity<?>  addUserAtEvent(@PathVariable String nameUser, @PathVariable String nameEvent) {
 		
 		event = eventService.getEvent(nameEvent);
 		user = userService.getUser(nameUser);
 		
-		if ((event.equals(null)) || (user.equals(null))) {
-			
-			return printError="Nor event or user exists";
-		}
-		
-		eventService.insertUserAndEvent(user.getId(), event.getId());
-		
-		return "OK";
+		if ((event!=null) || (event!=null)) {		
+			return new ResponseEntity<>(printError, HttpStatus.OK);
+		}		
+		eventService.insertUserAndEvent(user.getId(), event.getId());		
+		return new ResponseEntity<>("OK", HttpStatus.OK);
 	}
 	
-	public String  deleteUserAtEvent(String nameUser, String nameEvent) {
+	@RequestMapping(value="/deleteuser/{nameUser}/{nameEvent}", method=RequestMethod.DELETE)
+	public ResponseEntity<?>  deleteUserAtEvent(@PathVariable String nameUser, @PathVariable String nameEvent) {
 		
 		event = eventService.getEvent(nameEvent);
-		user = userService.getUser(nameUser);
-		
-		if ((event.equals(null)) || (user.equals(null))) {
-			
-			return printError="Nor event or user exists";
+		user = userService.getUser(nameUser);		
+		if ((event!=null) || (event!=null)) {
+			return new ResponseEntity<>(printError, HttpStatus.OK);
 		}
-		
 		eventService.deleteUserAndEvent(user.getId(), event.getId());
-		
-		return "OK";
-//		for(User userF : event.getUsers()) {
-//			if (userF.getName().equals(user.getName())){
-//				
-//				eventService.deleteUserAtEvent(userF, event);
-//				
-//				return "User removed from event";
-//			}
-//		}
+		return new ResponseEntity<>("DELETED", HttpStatus.OK);
+
 	}
 
 

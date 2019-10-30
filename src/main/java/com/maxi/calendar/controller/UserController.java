@@ -2,65 +2,86 @@ package com.maxi.calendar.controller;
 
 import java.util.List;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.maxi.calendar.model.User;
-import com.maxi.calendar.repository.UserRepository;
 import com.maxi.calendar.service.IUserService;
 
-@Controller
-
+@RestController
+@RequestMapping("/users")
 public class UserController {
 	
-	IUserService userService;
+	@Autowired
+	IUserService userService;	
 	
-	User user = new User();
+	User user = new User();	
+	String printError = "ERROR AL PROCESAR SOLICITUD";
 	
-	String printError;
-	
-	public List<User> getAll(){
+	@RequestMapping (value="/all", method=RequestMethod.GET)
+	public ResponseEntity<?> getAll(){
 		
-		return userService.getAllUsers();
+		List<User> users = userService.getAllUsers();
+		
+		if (users.isEmpty())
+		{
+			return new ResponseEntity<>("NO HAY USUARIOS", HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 	
-	public User getUser(String name) {
+	@RequestMapping(value="/{name}", method=RequestMethod.GET)
+	public ResponseEntity<?> getUser(@PathVariable String name) {
 		
 		user = userService.getUser(name); 
+		if (user == null) {
+			return new ResponseEntity<>(printError, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/new/{name}/{role}", method=RequestMethod.POST)
+	public ResponseEntity<?> addUser(@PathVariable String name,@PathVariable String role) {
+		
+		user = userService.createUser(name, role);
+		
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/mod/{name}/{role}", method=RequestMethod.PUT)
+	public ResponseEntity<?> modifyUser(@PathVariable String name,@PathVariable String role) {
+		
+		user = userService.getUser(name);		
 		if (user != null) {
-			return user;
-		}
-		printError="no existe usuario";
-		return printError;
-	}
+			if(name.equals(user.getName())) {
+				user.setName(name);
+			}
+			if(role.equals(user.getRole())) {
+				user.setRole(role);
+			}			
+			userService.editUser(user);			
+			return new ResponseEntity<>(user, HttpStatus.OK);
+		}		
+		return new ResponseEntity<>(printError, HttpStatus.OK);
 	
-	public User addUser(String name, String role) {
-		
-		return userService.createUser(name, role);
-	}
-	
-	public String modifyUser(String name, String role) {
-		
-		User user = userService.getUser(name);
-		
-		if (user.equals(null)) {
-			return printError="No existe usuario";
-		}
-		
-		user.setName(name);
-		user.setRole(role);
-		
-		userService.editUser(user);
-		
-		return "OK";
 	}
 
-	public String eraseUser(String name) {
+	@RequestMapping(value="/d/{name}", method=RequestMethod.DELETE)
+	public ResponseEntity<?> eraseUser(@PathVariable String name) {
 		
 		user = userService.getUser(name); 
 		if (user != null) {
 			userService.deleteUser(user);
-			return "OK";
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
-		return printError="No existe usuario";
+		return new ResponseEntity<>(printError, HttpStatus.OK);
+		
 	}
 }
