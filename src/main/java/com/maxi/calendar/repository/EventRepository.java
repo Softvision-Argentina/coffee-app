@@ -13,11 +13,11 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
 
 	public Event findByName(String name);
 	
-	@Modifying
-	@Query(value="INSERT INTO usuario_evento (user_id, event_id) VALUES (:user_id, :event_id)")
-	public Event addUserToEvent(@Param("user_id") int userId, @Param("event_id") int eventId);
-	
-	@Query(value="DELETE FROM usuario_evento ue WHERE ue.user= ?1 ue.event= ?2")
-	public Event removeUserFromEvent(int userId, int eventId);
+//	@Modifying
+//	@Query(value="INSERT INTO usuario_evento (user_id, event_id) VALUES (:user_id, :event_id)")
+//	public Event addUserToEvent(@Param("user_id") int userId, @Param("event_id") int eventId);
+//	
+//	@Query(value="DELETE FROM usuario_evento ue WHERE ue.user= ?1 ue.event= ?2")
+//	public Event removeUserFromEvent(int userId, int eventId);
 	
 }

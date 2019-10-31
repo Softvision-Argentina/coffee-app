@@ -15,7 +15,7 @@ public interface IEventService {
 	
 	public Event getEvent(String nameEvent);
 	
-	public Event createEvent(Date date, Date time, String nameEvent);
+	public Event createEvent(Date date, Date beginTime, Date endTime, String nameEvent);
 	
 	public void editEvent(Event event);
 	
@@ -23,8 +23,8 @@ public interface IEventService {
 	
 	public int setStatus(Event event);	
 	
-	public void insertUserAndEvent(int userId, int eventId);
+	public void insertUserAndEvent(Event event);
 	
-	public void deleteUserAndEvent(int userId, int eventId);
+	public void deleteUserAndEvent(Event event);
 	
 }

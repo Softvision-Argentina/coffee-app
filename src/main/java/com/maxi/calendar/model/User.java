@@ -6,15 +6,15 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="user")
 public class User {
 	
 	private int id;
 	private String name;
 	private String role;
-	
-	@ManyToMany(mappedBy="user")
 	private List<Event> events = new ArrayList<>();
 	
 	public User() {
@@ -52,6 +52,7 @@ public class User {
 		this.role = role;
 	}
 	
+	@ManyToMany(mappedBy="user")
 	public List<Event> getEvents() {
 		return events;
 	}

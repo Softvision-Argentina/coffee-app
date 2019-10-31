@@ -56,26 +56,31 @@ public class EventController {
 		
 	}
 	
-	@RequestMapping(value="/new/{date}/{time}/{nameEvent}", method=RequestMethod.POST)
-	public ResponseEntity<?> addEvent(@PathVariable Date date, @PathVariable Date time, @PathVariable String nameEvent) {
+	@RequestMapping(value="/new/{day}/{begintime}/{endtime}/{nameEvent}", method=RequestMethod.POST)
+	public ResponseEntity<?> addEvent(@PathVariable Date day, @PathVariable Date begintime, 
+										@PathVariable Date endtime, @PathVariable String nameEvent) {
 		
-		event = eventService.createEvent(date, time, nameEvent);
+		event = eventService.createEvent(day, begintime, endtime, nameEvent);
 		
 		return new ResponseEntity<>(event, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/mod/{name}/{date}/{time}/{status}", method=RequestMethod.PUT)
-	public ResponseEntity<?> editEvent(@PathVariable String name, @PathVariable Date date, @PathVariable Date time, @PathVariable int status) {
+	@RequestMapping(value="/mod/{name}/{day}/{begintime}/{endtime}/{status}", method=RequestMethod.PUT)
+	public ResponseEntity<?> editEvent(@PathVariable String name, @PathVariable Date day, 
+										@PathVariable Date begintime, @PathVariable Date endtime, @PathVariable int status) {
 		
 		event = eventService.getEvent(name);
 		
 		if (event != null) {
 			
-			if(!date.equals(event.getDate())) {
-				event.setDate(date);
+			if(!day.equals(event.getDay())) {
+				event.setDay(day);
 			}
-			if(!time.equals(event.getTime())) {
-				event.setTime(time);
+			if(!begintime.equals(event.getBeginTime())) {
+				event.setBeginTime(begintime);
+			}
+			if(!endtime.equals(event.getEndTime())) {
+				event.setEndTime(endtime);
 			}
 			if(status!=event.getStatus()) {
 				event.setStatus(status);
@@ -120,10 +125,13 @@ public class EventController {
 		event = eventService.getEvent(nameEvent);
 		user = userService.getUser(nameUser);
 		
-		if ((event!=null) || (event!=null)) {		
+		if ((event==null) || (event==null)) {		
 			return new ResponseEntity<>(printError, HttpStatus.OK);
-		}		
-		eventService.insertUserAndEvent(user.getId(), event.getId());		
+		}
+		
+		event.getUsers().add(user);
+		user.getEvents().add(event);
+		eventService.insertUserAndEvent(event);		
 		return new ResponseEntity<>("OK", HttpStatus.OK);
 	}
 	
@@ -131,11 +139,15 @@ public class EventController {
 	public ResponseEntity<?>  deleteUserAtEvent(@PathVariable String nameUser, @PathVariable String nameEvent) {
 		
 		event = eventService.getEvent(nameEvent);
-		user = userService.getUser(nameUser);		
-		if ((event!=null) || (event!=null)) {
+		user = userService.getUser(nameUser);	
+		
+		if ((event==null) || (event==null)) {
 			return new ResponseEntity<>(printError, HttpStatus.OK);
 		}
-		eventService.deleteUserAndEvent(user.getId(), event.getId());
+		
+		event.getUsers().remove(user);
+		user.getEvents().remove(event);
+		eventService.deleteUserAndEvent(event);
 		return new ResponseEntity<>("DELETED", HttpStatus.OK);
 
 	}

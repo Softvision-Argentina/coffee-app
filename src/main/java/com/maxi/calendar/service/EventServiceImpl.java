@@ -3,6 +3,7 @@ package com.maxi.calendar.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.maxi.calendar.model.Event;
@@ -13,7 +14,9 @@ import com.maxi.calendar.repository.UserRepository;
 @Service
 public class EventServiceImpl implements IEventService {
 	
+	@Autowired
 	EventRepository eventRepository;
+	@Autowired
 	UserRepository  userRepository;
 
 	@Override
@@ -27,8 +30,8 @@ public class EventServiceImpl implements IEventService {
 	}
 
 	@Override
-	public Event createEvent(Date date, Date time, String nameEvent) {
-		Event newEvent = new Event (date, time, nameEvent);
+	public Event createEvent(Date date, Date beginTime, Date endTime, String nameEvent) {
+		Event newEvent = new Event (date, beginTime, endTime, nameEvent);
 		return eventRepository.save(newEvent);
 	}
 
@@ -52,14 +55,13 @@ public class EventServiceImpl implements IEventService {
 	}
 	
 	@Override
-	public void insertUserAndEvent(int userId, int eventId) {
-		eventRepository.addUserToEvent(userId, eventId);
-
+	public void insertUserAndEvent(Event event) {
+		eventRepository.save(event);
 	}
 
 	@Override
-	public void deleteUserAndEvent(int userId, int eventId) {
-		eventRepository.removeUserFromEvent(userId, eventId);
+	public void deleteUserAndEvent(Event event) {
+		eventRepository.delete(event);
 
 	}
 
