@@ -11,7 +11,7 @@ import com.maxi.calendar.model.Event;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Integer> {
 
-	public Event findByName(String name);
+	public Event findByNameEvent(String name);
 	
 //	@Modifying
 //	@Query(value="INSERT INTO usuario_evento (user_id, event_id) VALUES (:user_id, :event_id)")

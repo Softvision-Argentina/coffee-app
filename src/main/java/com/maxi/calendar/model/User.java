@@ -52,7 +52,7 @@ public class User {
 		this.role = role;
 	}
 	
-	@ManyToMany(mappedBy="user")
+	@ManyToMany(mappedBy="users")
 	public List<Event> getEvents() {
 		return events;
 	}

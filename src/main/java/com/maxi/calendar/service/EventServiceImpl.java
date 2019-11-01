@@ -26,7 +26,7 @@ public class EventServiceImpl implements IEventService {
 
 	@Override
 	public Event getEvent(String nameEvent) {
-		return eventRepository.findByName(nameEvent);
+		return eventRepository.findByNameEvent(nameEvent);
 	}
 
 	@Override
