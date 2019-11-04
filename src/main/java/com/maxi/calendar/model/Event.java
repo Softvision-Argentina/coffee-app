@@ -15,6 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.maxi.calendar.utils.Status;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +38,7 @@ public class Event {
 	@Column(name="end_time")
 	private Date endTime;
 	
-	private int status;
+	private Status status;
 	
 	@Column(name="name")
 	private String nameEvent;
@@ -52,7 +54,7 @@ public class Event {
 	}
 	
 	//full optional constructor
-	public Event(Date day, Date beginTime, Date endTime, int status, List<User> users) {
+	public Event(Date day, Date beginTime, Date endTime, Status status, List<User> users) {
 		this.day=day;
 		this.beginTime=beginTime;
 		this.endTime=endTime;

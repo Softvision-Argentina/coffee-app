@@ -12,6 +12,7 @@ import com.maxi.calendar.model.Event;
 import com.maxi.calendar.model.User;
 import com.maxi.calendar.repository.EventRepository;
 import com.maxi.calendar.repository.UserRepository;
+import com.maxi.calendar.utils.Status;
 
 @Service
 public class EventServiceImpl implements IEventService {
@@ -42,7 +43,7 @@ public class EventServiceImpl implements IEventService {
 		Date uDay = uEvent.getDay();
 		Date uBeginTime = uEvent.getBeginTime();
 		Date uEndTime = uEvent.getEndTime();
-		int  uStatus = uEvent.getStatus();
+		Status  uStatus = uEvent.getStatus();
 		
 		if (oldEvent != null) {
 					
@@ -69,7 +70,7 @@ public class EventServiceImpl implements IEventService {
 	}
 
 	@Override
-	public int setStatus(Event event) {
+	public Status setStatus(Event event) {
 		eventRepository.save(event);
 		
 		return event.getStatus();

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.maxi.calendar.model.Event;
 import com.maxi.calendar.model.User;
+import com.maxi.calendar.utils.Status;
 
 @Service
 public interface IEventService {
@@ -21,7 +22,7 @@ public interface IEventService {
 	
 	public void deleteEvent(int id);
 	
-	public int setStatus(Event event);	
+	public Status setStatus(Event event);	
 	
 	public void insertUserAndEvent(Event event);
 	
