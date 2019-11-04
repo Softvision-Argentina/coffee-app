@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,68 +21,68 @@ public class UserController {
 	@Autowired
 	IUserService userService;	
 	
-	User user = new User();	
-	String printError = "ERROR AL PROCESAR SOLICITUD";
-	
-	@RequestMapping (value="/all", method=RequestMethod.GET)
+	@RequestMapping (value="/", method=RequestMethod.GET)
 	public ResponseEntity<?> getAll(){
 		
 		List<User> users = userService.getAllUsers();
 		
 		if (users.isEmpty())
 		{
-			return new ResponseEntity<>("NO HAY USUARIOS", HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/{name}", method=RequestMethod.GET)
-	public ResponseEntity<?> getUser(@PathVariable String name) {
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	public ResponseEntity<?> getUser(@PathVariable int id) {
 		
-		user = userService.getUser(name); 
+		User user = userService.getUser(id); 
 		if (user == null) {
-			return new ResponseEntity<>(printError, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/new/{name}/{role}", method=RequestMethod.POST)
-	public ResponseEntity<?> addUser(@PathVariable String name,@PathVariable String role) {
+	@RequestMapping(value="/add", method=RequestMethod.POST)
+	public ResponseEntity<?> addUser(@RequestBody User newUser) {
 		
-		user = userService.createUser(name, role);
+		User user = userService.createUser(newUser);
 		
-		return new ResponseEntity<>(user, HttpStatus.OK);
+		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value="/mod/{name}/{role}", method=RequestMethod.PUT)
-	public ResponseEntity<?> modifyUser(@PathVariable String name,@PathVariable String role) {
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<?> modifyUser(@RequestBody User uUser, @PathVariable int id) {
 		
-		user = userService.getUser(name);		
+		String uName = uUser.getName();
+		String uRole = uUser.getRole();
+		
+		User user = userService.getUser(id);		
 		if (user != null) {
-			if(name.equals(user.getName())) {
-				user.setName(name);
+			if(!uName.equals(user.getName())) {
+				user.setName(uName);
 			}
-			if(role.equals(user.getRole())) {
-				user.setRole(role);
+			if(!uRole.equals(user.getRole())) {
+				user.setRole(uRole);
 			}			
 			userService.editUser(user);			
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		}		
-		return new ResponseEntity<>(printError, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
 	
 	}
 
-	@RequestMapping(value="/d/{name}", method=RequestMethod.DELETE)
-	public ResponseEntity<?> eraseUser(@PathVariable String name) {
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<?> eraseUser(@PathVariable int id) {
 		
-		user = userService.getUser(name); 
+		User user = userService.getUser(id); 
 		if (user != null) {
-			userService.deleteUser(user);
+			userService.deleteUser(id);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
-		return new ResponseEntity<>(printError, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		
 	}
 }

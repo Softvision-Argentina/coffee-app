@@ -1,20 +1,33 @@
 package com.maxi.calendar.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name="user")
+@AllArgsConstructor @Getter @Setter
 public class User {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	
 	private String name;
 	private String role;
+	
+	@ManyToMany(mappedBy="users")
 	private List<Event> events = new ArrayList<>();
 	
 	public User() {
@@ -25,43 +38,5 @@ public class User {
 		this.name=name;
 		this.role=role;
 	}
-	
-	//getters & setters		
-	@Id
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getRole() {
-		return role;
-	}
-	
-	public void setRole(String role) {
-		this.role = role;
-	}
-	
-	@ManyToMany(mappedBy="users")
-	public List<Event> getEvents() {
-		return events;
-	}
-
-	public void setEvents(List<Event> events) {
-		this.events = events;
-	}
-
-	
-	
 
 }

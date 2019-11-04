@@ -11,13 +11,13 @@ public interface IUserService {
 	
 	public List<User> getAllUsers();
 	
-	public User getUser(String name);
+	public User getUser(int id);
 	
-	public User createUser(String name, String role);
+	public User createUser(User newUser);
 	
 	public void editUser(User user);
 	
-	public void deleteUser(User user);
+	public void deleteUser(int id);
 	
 
 }

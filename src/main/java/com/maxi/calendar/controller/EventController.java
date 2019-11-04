@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,102 +32,103 @@ public class EventController {
 	User user = new User();
 	List<User> users = new ArrayList<User>();
 	
-	String printError = "ERROR AL PROCESAR SOLICITUD";
-	
-	@RequestMapping(value="/all", method=RequestMethod.GET)
+	@RequestMapping(value="/", method=RequestMethod.GET)
 	public ResponseEntity<?> getAll(){
 		
 		List<Event> events = eventService.getAllEvents();
 		if(events.isEmpty()) {
-			return new ResponseEntity<>("NO HAY EVENTOS", HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<>(events, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/{name}", method=RequestMethod.GET)
-	public ResponseEntity<?> getEvent(@PathVariable String name) {
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	public ResponseEntity<?> getEvent(@PathVariable int id) {
 		
-		event = eventService.getEvent(name);
+		event = eventService.getEvent(id);
 		
 		if (event == null) {
-			return new ResponseEntity<>(printError, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		
 		return new ResponseEntity<>(event, HttpStatus.OK);
 		
 	}
 	
-	@RequestMapping(value="/new/{day}/{begintime}/{endtime}/{nameEvent}", method=RequestMethod.POST)
-	public ResponseEntity<?> addEvent(@PathVariable Date day, @PathVariable Date begintime, 
-										@PathVariable Date endtime, @PathVariable String nameEvent) {
+	@RequestMapping(value="/add", method=RequestMethod.POST)
+	public ResponseEntity<?> addEvent(@RequestBody Event newEvent) {
 		
-		event = eventService.createEvent(day, begintime, endtime, nameEvent);
+		event = eventService.createEvent(newEvent);
 		
-		return new ResponseEntity<>(event, HttpStatus.OK);
+		return new ResponseEntity<>(event, HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value="/mod/{name}/{day}/{begintime}/{endtime}/{status}", method=RequestMethod.PUT)
-	public ResponseEntity<?> editEvent(@PathVariable String name, @PathVariable Date day, 
-										@PathVariable Date begintime, @PathVariable Date endtime, @PathVariable int status) {
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<?> editEvent(@RequestBody Event uEvent, @PathVariable int id) {
 		
-		event = eventService.getEvent(name);
+		Date uDay = uEvent.getDay();
+		Date uBeginTime = uEvent.getBeginTime();
+		Date uEndTime = uEvent.getEndTime();
+		int  uName = uEvent.getStatus();
+		
+		event = eventService.getEvent(id);
 		
 		if (event != null) {
 			
-			if(!day.equals(event.getDay())) {
-				event.setDay(day);
+			if(!uDay.equals(event.getDay())) {
+				event.setDay(uDay);
 			}
-			if(!begintime.equals(event.getBeginTime())) {
-				event.setBeginTime(begintime);
+			if(!uBeginTime.equals(event.getBeginTime())) {
+				event.setBeginTime(uBeginTime);
 			}
-			if(!endtime.equals(event.getEndTime())) {
-				event.setEndTime(endtime);
+			if(!uEndTime.equals(event.getEndTime())) {
+				event.setEndTime(uEndTime);
 			}
-			if(status!=event.getStatus()) {
-				event.setStatus(status);
+			if(uName!=event.getStatus()) {
+				event.setStatus(uName);
 			}
 			
 			eventService.editEvent(event);
 			return new ResponseEntity<>(event, HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<>(printError, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
 		
 	}
 	
-	@RequestMapping(value="/d/{name}", method=RequestMethod.DELETE)
-	public ResponseEntity<?> deleteEvent(@PathVariable String name) {
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<?> deleteEvent(@PathVariable int id) {
 		
-		event = eventService.getEvent(name);		
+		event = eventService.getEvent(id);		
 		if(event != null) {
-			eventService.deleteEvent(event);
-			return new ResponseEntity<>("DELETED", HttpStatus.OK);
+			eventService.deleteEvent(id);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
-		return new ResponseEntity<>(printError, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		
 	}
 
-	@RequestMapping(value="/modstatus/{name}/{status}", method=RequestMethod.PUT)
-	public ResponseEntity<?> setEventStatus(@PathVariable String name, @PathVariable int status) { //both for cancel and status change
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<?> setEventStatus(@RequestBody Event sEvent, int id) { //both for cancel and status change
 		
-		event = eventService.getEvent(name);
+		event = eventService.getEvent(id);
 		
 		if(event != null) {
-			event.setStatus(status);
+			event.setStatus(sEvent.getStatus());
 			eventService.setStatus(event);
 			return new ResponseEntity<>(event, HttpStatus.OK);
 		}	
-		return new ResponseEntity<>(printError, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
-	@RequestMapping(value="/adduser/{nameUser}/{nameEvent}", method=RequestMethod.POST)
-	public ResponseEntity<?>  addUserAtEvent(@PathVariable String nameUser, @PathVariable String nameEvent) {
+	@RequestMapping(value="/{idUser}/{idEvent}", method=RequestMethod.POST)
+	public ResponseEntity<?>  addUserAtEvent(@PathVariable int idUser, @PathVariable int idEvent) {
 		
-		event = eventService.getEvent(nameEvent);
-		user = userService.getUser(nameUser);
+		event = eventService.getEvent(idEvent);
+		user = userService.getUser(idUser);
 		
 		if ((event==null) || (event==null)) {		
-			return new ResponseEntity<>(printError, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		
 		event.getUsers().add(user);
@@ -135,14 +137,14 @@ public class EventController {
 		return new ResponseEntity<>("OK", HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/deleteuser/{nameUser}/{nameEvent}", method=RequestMethod.DELETE)
-	public ResponseEntity<?>  deleteUserAtEvent(@PathVariable String nameUser, @PathVariable String nameEvent) {
+	@RequestMapping(value="/{idUser}/{idEvent}", method=RequestMethod.DELETE)
+	public ResponseEntity<?>  deleteUserAtEvent(@PathVariable int idUser, @PathVariable int idEvent) {
 		
-		event = eventService.getEvent(nameEvent);
-		user = userService.getUser(nameUser);	
+		event = eventService.getEvent(idEvent);
+		user = userService.getUser(idUser);	
 		
 		if ((event==null) || (event==null)) {
-			return new ResponseEntity<>(printError, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		
 		event.getUsers().remove(user);

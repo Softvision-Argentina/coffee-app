@@ -25,13 +25,12 @@ public class EventServiceImpl implements IEventService {
 	}
 
 	@Override
-	public Event getEvent(String nameEvent) {
-		return eventRepository.findByNameEvent(nameEvent);
+	public Event getEvent(int id) {
+		return eventRepository.findById(id);
 	}
 
 	@Override
-	public Event createEvent(Date date, Date beginTime, Date endTime, String nameEvent) {
-		Event newEvent = new Event (date, beginTime, endTime, nameEvent);
+	public Event createEvent(Event newEvent) {
 		return eventRepository.save(newEvent);
 	}
 
@@ -41,9 +40,9 @@ public class EventServiceImpl implements IEventService {
 	}
 
 	@Override
-	public void deleteEvent(Event event) {
+	public void deleteEvent(int id) {
 		
-		eventRepository.delete(event);
+		eventRepository.deleteById(id);
 	}
 
 	@Override

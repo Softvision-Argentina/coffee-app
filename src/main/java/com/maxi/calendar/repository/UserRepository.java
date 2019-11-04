@@ -2,6 +2,7 @@ package com.maxi.calendar.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.maxi.calendar.model.User;
 
@@ -9,5 +10,8 @@ import com.maxi.calendar.model.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 	
 	public User findByName(String name);
+	
+	@Transactional
+	public User findById(int id);
 
 }

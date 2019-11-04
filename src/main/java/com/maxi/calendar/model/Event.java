@@ -7,22 +7,44 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name="event")
+@AllArgsConstructor @Getter @Setter
 public class Event {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	
 	private Date day;
+	
+	@Column(name="begin_time")
 	private Date beginTime;
+	
+	@Column(name="end_time")
 	private Date endTime;
+	
 	private int status;
+	
+	@Column(name="name")
 	private String nameEvent;
+	
+	@ManyToMany(cascade=CascadeType.ALL)
+	@JoinTable(name="event_user", 
+	joinColumns=@JoinColumn(name="event_id", referencedColumnName="id"),
+	inverseJoinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
 	private List<User> users = new ArrayList<>();
 	
 	public Event() {
@@ -45,71 +67,5 @@ public class Event {
 		this.endTime=endTime;
 		this.nameEvent=nameEvent;
 	}
-
-	//getters & setters	
-	@Id
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-		this.id=id;
-	}
-	
-	public Date getDay() {
-		return day;
-	}
-	
-	public void setDay(Date day) {
-		this.day = day;
-	}
-	
-	@Column(name="begin_time")
-	public Date getBeginTime() {
-		return beginTime;
-	}
-	
-	public void setBeginTime(Date beginTime) {
-		this.beginTime = beginTime;
-	}
-	
-	@Column(name="end_time")
-	public Date getEndTime() {
-		return endTime;
-	}
-	
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
-	}
-	
-	public int getStatus() {
-		return status;
-	}
-	
-	public void setStatus(int status) {
-		this.status = status;
-	}
-	
-	@Column(name="name")
-	public String getNameEvent() {
-		return nameEvent;
-	}
-
-	public void setNameEvent(String nameEvent) {
-		this.nameEvent = nameEvent;
-	}
-
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="event_user", 
-	joinColumns=@JoinColumn(name="event_id", referencedColumnName="id"),
-	inverseJoinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
-	public List<User> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
-	}
-	
 
 }

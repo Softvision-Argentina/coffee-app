@@ -13,13 +13,13 @@ public interface IEventService {
 	
 	public List<Event> getAllEvents();
 	
-	public Event getEvent(String nameEvent);
+	public Event getEvent(int id);
 	
-	public Event createEvent(Date date, Date beginTime, Date endTime, String nameEvent);
+	public Event createEvent(Event newEvent);
 	
 	public void editEvent(Event event);
 	
-	public void deleteEvent(Event event);
+	public void deleteEvent(int id);
 	
 	public int setStatus(Event event);	
 	
