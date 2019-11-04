@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.maxi.calendar.utils.Roles;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +27,7 @@ public class User {
 	private int id;
 	
 	private String name;
-	private String role;
+	private Roles role;
 	
 	@ManyToMany(mappedBy="users")
 	private List<Event> events = new ArrayList<>();
@@ -34,7 +36,7 @@ public class User {
 		
 	}
 	
-	public User(String name, String role) {
+	public User(String name, Roles role) {
 		this.name=name;
 		this.role=role;
 	}

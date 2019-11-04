@@ -17,7 +17,7 @@ public interface IEventService {
 	
 	public Event createEvent(Event newEvent);
 	
-	public void editEvent(Event event);
+	public void editEvent(Event uEvent, Event oldEvent);
 	
 	public void deleteEvent(int id);
 	

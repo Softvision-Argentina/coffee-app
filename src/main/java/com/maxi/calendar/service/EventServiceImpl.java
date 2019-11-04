@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.maxi.calendar.model.Event;
@@ -35,8 +37,29 @@ public class EventServiceImpl implements IEventService {
 	}
 
 	@Override
-	public void editEvent(Event event) {
-		eventRepository.save(event);
+	public void editEvent(Event uEvent, Event oldEvent) {		
+		
+		Date uDay = uEvent.getDay();
+		Date uBeginTime = uEvent.getBeginTime();
+		Date uEndTime = uEvent.getEndTime();
+		int  uStatus = uEvent.getStatus();
+		
+		if (oldEvent != null) {
+					
+			if(!uDay.equals(oldEvent.getDay())) {
+				oldEvent.setDay(uDay);
+			}
+			if(!uBeginTime.equals(oldEvent.getBeginTime())) {
+				oldEvent.setBeginTime(uBeginTime);
+			}
+			if(!uEndTime.equals(oldEvent.getEndTime())) {
+				oldEvent.setEndTime(uEndTime);
+			}
+			if(uStatus!=oldEvent.getStatus()) {
+				oldEvent.setStatus(uStatus);
+			}
+		}
+		eventRepository.save(uEvent);
 	}
 
 	@Override

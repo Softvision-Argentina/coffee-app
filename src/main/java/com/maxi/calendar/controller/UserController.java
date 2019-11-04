@@ -5,7 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxi.calendar.model.User;
 import com.maxi.calendar.service.IUserService;
+import com.maxi.calendar.utils.Roles;
 
 @RestController
 @RequestMapping("/users")
@@ -21,7 +26,7 @@ public class UserController {
 	@Autowired
 	IUserService userService;	
 	
-	@RequestMapping (value="/", method=RequestMethod.GET)
+	@GetMapping ("/")
 	public ResponseEntity<?> getAll(){
 		
 		List<User> users = userService.getAllUsers();
@@ -45,7 +50,7 @@ public class UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/add", method=RequestMethod.POST)
+	@PostMapping("/add")
 	public ResponseEntity<?> addUser(@RequestBody User newUser) {
 		
 		User user = userService.createUser(newUser);
@@ -53,11 +58,11 @@ public class UserController {
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	@PutMapping("/{id}")
 	public ResponseEntity<?> modifyUser(@RequestBody User uUser, @PathVariable int id) {
 		
 		String uName = uUser.getName();
-		String uRole = uUser.getRole();
+		Roles uRole = uUser.getRole();
 		
 		User user = userService.getUser(id);		
 		if (user != null) {
@@ -74,7 +79,7 @@ public class UserController {
 	
 	}
 
-	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	@DeleteMapping("/{id}")
 	public ResponseEntity<?> eraseUser(@PathVariable int id) {
 		
 		User user = userService.getUser(id); 
