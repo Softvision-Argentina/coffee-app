@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxi.calendar.model.Event;
 import com.maxi.calendar.model.User;
-import com.maxi.calendar.repository.EventRepository;
 import com.maxi.calendar.service.IEventService;
 import com.maxi.calendar.service.IUserService;
 
@@ -27,10 +26,6 @@ public class EventController {
 	IEventService 		eventService;
 	@Autowired
 	IUserService		userService;
-	
-	Event event = new Event();
-	User user = new User();
-	List<User> users = new ArrayList<User>();
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public ResponseEntity<?> getAll(){
@@ -45,7 +40,7 @@ public class EventController {
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<?> getEvent(@PathVariable int id) {
 		
-		event = eventService.getEvent(id);
+		Event event = eventService.getEvent(id);
 		
 		if (event == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -58,7 +53,7 @@ public class EventController {
 	@RequestMapping(value="/add", method=RequestMethod.POST)
 	public ResponseEntity<?> addEvent(@RequestBody Event newEvent) {
 		
-		event = eventService.createEvent(newEvent);
+		Event event = eventService.createEvent(newEvent);
 		
 		return new ResponseEntity<>(event, HttpStatus.CREATED);
 	}
@@ -71,7 +66,7 @@ public class EventController {
 		Date uEndTime = uEvent.getEndTime();
 		int  uName = uEvent.getStatus();
 		
-		event = eventService.getEvent(id);
+		Event event = eventService.getEvent(id);
 		
 		if (event != null) {
 			
@@ -99,7 +94,7 @@ public class EventController {
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<?> deleteEvent(@PathVariable int id) {
 		
-		event = eventService.getEvent(id);		
+		Event event = eventService.getEvent(id);		
 		if(event != null) {
 			eventService.deleteEvent(id);
 			return new ResponseEntity<>(HttpStatus.OK);
@@ -108,10 +103,10 @@ public class EventController {
 		
 	}
 
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	@RequestMapping(value="/status/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<?> setEventStatus(@RequestBody Event sEvent, int id) { //both for cancel and status change
 		
-		event = eventService.getEvent(id);
+		Event event = eventService.getEvent(id);
 		
 		if(event != null) {
 			event.setStatus(sEvent.getStatus());
@@ -124,8 +119,8 @@ public class EventController {
 	@RequestMapping(value="/{idUser}/{idEvent}", method=RequestMethod.POST)
 	public ResponseEntity<?>  addUserAtEvent(@PathVariable int idUser, @PathVariable int idEvent) {
 		
-		event = eventService.getEvent(idEvent);
-		user = userService.getUser(idUser);
+		Event event = eventService.getEvent(idEvent);
+		User user = userService.getUser(idUser);
 		
 		if ((event==null) || (event==null)) {		
 			return new ResponseEntity<>(HttpStatus.OK);
@@ -140,8 +135,8 @@ public class EventController {
 	@RequestMapping(value="/{idUser}/{idEvent}", method=RequestMethod.DELETE)
 	public ResponseEntity<?>  deleteUserAtEvent(@PathVariable int idUser, @PathVariable int idEvent) {
 		
-		event = eventService.getEvent(idEvent);
-		user = userService.getUser(idUser);	
+		Event event = eventService.getEvent(idEvent);
+		User user = userService.getUser(idUser);	
 		
 		if ((event==null) || (event==null)) {
 			return new ResponseEntity<>(HttpStatus.OK);
