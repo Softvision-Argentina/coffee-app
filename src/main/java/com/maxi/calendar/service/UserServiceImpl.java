@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 import com.maxi.calendar.model.User;
 import com.maxi.calendar.repository.UserRepository;
 
+import lombok.NoArgsConstructor;
+
 @Service
+@NoArgsConstructor 
 public class UserServiceImpl implements IUserService {
 	
 	@Autowired

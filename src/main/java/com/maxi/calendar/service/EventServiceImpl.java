@@ -14,7 +14,10 @@ import com.maxi.calendar.repository.EventRepository;
 import com.maxi.calendar.repository.UserRepository;
 import com.maxi.calendar.utils.Status;
 
+import lombok.NoArgsConstructor;
+
 @Service
+@NoArgsConstructor 
 public class EventServiceImpl implements IEventService {
 	
 	@Autowired
