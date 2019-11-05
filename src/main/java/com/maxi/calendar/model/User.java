@@ -14,12 +14,13 @@ import javax.persistence.Table;
 import com.maxi.calendar.utils.Roles;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Table(name="user")
-@AllArgsConstructor @Getter @Setter
+@AllArgsConstructor @Getter @Setter @Builder
 public class User {
 	
 	@Id
@@ -31,14 +32,5 @@ public class User {
 	
 	@ManyToMany(mappedBy="users")
 	private List<Event> events = new ArrayList<>();
-	
-	public User() {
-		
-	}
-	
-	public User(String name, Roles role) {
-		this.name=name;
-		this.role=role;
-	}
 
 }

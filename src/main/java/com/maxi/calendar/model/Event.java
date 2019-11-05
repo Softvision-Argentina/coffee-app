@@ -18,12 +18,13 @@ import javax.persistence.Table;
 import com.maxi.calendar.utils.Status;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Table(name="event")
-@AllArgsConstructor @Getter @Setter
+@AllArgsConstructor @Getter @Setter @Builder
 public class Event {
 	
 	@Id
@@ -48,26 +49,5 @@ public class Event {
 	joinColumns=@JoinColumn(name="event_id", referencedColumnName="id"),
 	inverseJoinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
 	private List<User> users = new ArrayList<>();
-	
-	public Event() {
-		
-	}
-	
-	//full optional constructor
-	public Event(Date day, Date beginTime, Date endTime, Status status, List<User> users) {
-		this.day=day;
-		this.beginTime=beginTime;
-		this.endTime=endTime;
-		this.status=status;
-		this.users=users;
-	}
-	
-	//"default" constructor for controller
-	public Event(Date day, Date beginTime, Date endTime, String nameEvent) {
-		this.day=day;
-		this.beginTime=beginTime;
-		this.endTime=endTime;
-		this.nameEvent=nameEvent;
-	}
 
 }
