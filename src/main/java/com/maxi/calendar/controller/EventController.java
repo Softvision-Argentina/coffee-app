@@ -1,6 +1,5 @@
 package com.maxi.calendar.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxi.calendar.model.Event;
@@ -122,7 +120,7 @@ public class EventController {
 		Event event = eventService.getEvent(idEvent);
 		User user = userService.getUser(idUser);	
 		
-		if ((event==null) || (event==null)) {
+		if ((event==null) || (user==null)) {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		
