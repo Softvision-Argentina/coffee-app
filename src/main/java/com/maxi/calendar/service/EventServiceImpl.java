@@ -1,15 +1,13 @@
 package com.maxi.calendar.service;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.maxi.calendar.model.Event;
-import com.maxi.calendar.model.User;
 import com.maxi.calendar.repository.EventRepository;
 import com.maxi.calendar.repository.UserRepository;
 import com.maxi.calendar.utils.Status;
@@ -43,9 +41,9 @@ public class EventServiceImpl implements IEventService {
 	@Override
 	public void editEvent(Event uEvent, Event oldEvent) {		
 		
-		Date uDay = uEvent.getDay();
-		Date uBeginTime = uEvent.getBeginTime();
-		Date uEndTime = uEvent.getEndTime();
+		LocalDate uDay = uEvent.getDay();
+		LocalTime uBeginTime = uEvent.getBeginTime();
+		LocalTime uEndTime = uEvent.getEndTime();
 		Status  uStatus = uEvent.getStatus();
 		
 		if (oldEvent != null) {

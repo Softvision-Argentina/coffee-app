@@ -1,7 +1,8 @@
 package com.maxi.calendar.model;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -31,13 +32,13 @@ public class Event {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	private Date day;
+	private LocalDate day;
 	
 	@Column(name="begin_time")
-	private Date beginTime;
+	private LocalTime beginTime;
 	
 	@Column(name="end_time")
-	private Date endTime;
+	private LocalTime endTime;
 	
 	private Status status;
 	

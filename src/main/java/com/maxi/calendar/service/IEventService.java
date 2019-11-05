@@ -1,12 +1,10 @@
 package com.maxi.calendar.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.maxi.calendar.model.Event;
-import com.maxi.calendar.model.User;
 import com.maxi.calendar.utils.Status;
 
 @Service
