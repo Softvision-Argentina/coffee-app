@@ -15,8 +15,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor 
 public class UserServiceImpl implements IUserService {
 	
-	@Autowired
+	//@Autowired
 	UserRepository userRepository;
+	
+	UserServiceImpl(UserRepository userRepository){
+		this.userRepository=userRepository;
+	}
 	
 	List<User> users = new ArrayList<User>();
 

@@ -16,17 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxi.calendar.model.Event;
 import com.maxi.calendar.model.User;
+import com.maxi.calendar.service.EventServiceImpl;
 import com.maxi.calendar.service.IEventService;
 import com.maxi.calendar.service.IUserService;
+import com.maxi.calendar.service.UserServiceImpl;
 
 @RestController
 @RequestMapping("/events")
 public class EventController {
 	
-	@Autowired
+	//@Autowired
 	IEventService 		eventService;
-	@Autowired
+	//@Autowired
 	IUserService		userService;
+	
+	EventController (EventServiceImpl eventService, UserServiceImpl userService){
+		this.eventService=eventService;
+		this.userService=userService;
+	}
+	
 	
 	@GetMapping("/")
 	public ResponseEntity<?> getAll(){

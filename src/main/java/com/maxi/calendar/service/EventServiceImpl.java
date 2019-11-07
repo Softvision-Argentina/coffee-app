@@ -18,10 +18,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor 
 public class EventServiceImpl implements IEventService {
 	
-	@Autowired
+	//@Autowired
 	EventRepository eventRepository;
-	@Autowired
+	//@Autowired
 	UserRepository  userRepository;
+	
+	EventServiceImpl (EventRepository eventRepository, UserRepository userReposutory){
+		this.eventRepository=eventRepository;
+		this.userRepository=userReposutory;
+	}
 
 	@Override
 	public List<Event> getAllEvents() {
