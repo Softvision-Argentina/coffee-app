@@ -1,0 +1,2 @@
+ INSERT INTO events (id, status, event_date, event_title, event_description) VALUES (1, 'in-process', '2019-10-1', 'App Review', 'Presenting the new app to the team')
+ INSERT INTO events (id, status, event_date, event_title, event_description) VALUES (2, 'pending', '2019-10-2', 'App Final Review', 'Presenting the new app to the complete group')
