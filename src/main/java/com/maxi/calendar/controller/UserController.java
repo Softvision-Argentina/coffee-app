@@ -17,14 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maxi.calendar.model.User;
 import com.maxi.calendar.service.IUserService;
+import com.maxi.calendar.service.UserServiceImpl;
 import com.maxi.calendar.utils.Roles;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 	
-	@Autowired
+	//@Autowired
 	IUserService userService;	
+
+	UserController(UserServiceImpl userService){
+		this.userService=userService;
+	}
 	
 	@GetMapping ("/")
 	public ResponseEntity<?> getAll(){

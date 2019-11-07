@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,6 +42,7 @@ public class Event {
 	@Column(name="end_time")
 	private LocalTime endTime;
 	
+	@Enumerated(EnumType.STRING)
 	private Status status;
 	
 	@Column(name="name")
@@ -49,6 +52,6 @@ public class Event {
 	@JoinTable(name="event_user", 
 	joinColumns=@JoinColumn(name="event_id", referencedColumnName="id"),
 	inverseJoinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
-	private List<User> users = new ArrayList<>();
+	final private List<User> users = new ArrayList<>();
 
 }

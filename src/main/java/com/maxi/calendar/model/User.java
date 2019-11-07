@@ -1,10 +1,11 @@
 package com.maxi.calendar.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,9 +29,11 @@ public class User {
 	private int id;
 	
 	private String name;
+	
+	@Enumerated(EnumType.STRING)
 	private Roles role;
 	
 	@ManyToMany(mappedBy="users")
-	private List<Event> events = new ArrayList<>();
+	final private List<Event> events = new ArrayList<>();
 
 }
