@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${titulo}"></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<h1 th:text="${titulo}"></h1>
+<form th:action="@{/form}" th:object="${event}" method="post">
+    <table>
+        <tr>
+            <td>Set status</td>
+            <td><input type="text" th:field="*{status}"/></td>
+            <td><small class="form-text text-danger" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></small></td>
+        </tr>
+        <tr>
+            <td>Title</td>
+            <td><input type="text" th:field="*{eventTitle}" th:errorclass="'form-control alert-danger'"/></td>
+            <td><small class="form-text text-danger" th:if="${#fields.hasErrors('eventTitle')}" th:errors="*{eventTitle}"></small></td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><input type="text" th:field="*{eventDescription}" th:errorclass="'form-control alert-danger'"/></td>
+            <td><small class="form-text text-danger" th:if="${#fields.hasErrors('eventDescription')}" th:errors="*{eventDescription}"></small></td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td><input type="text" th:field="*{eventDate}" th:errorclass="'form-control alert-danger'"/></td>
+            <td><small class="form-text text-danger" th:if="${#fields.hasErrors('eventDate')}" th:errors="*{eventDate}"></small></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Add new"/></td>
+        </tr>
+    </table>
+    <input type="hidden" th:field="*{id}"/>
+</form>
+</body>
+</html>
