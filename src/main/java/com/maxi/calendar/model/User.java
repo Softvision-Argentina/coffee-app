@@ -17,11 +17,12 @@ import com.maxi.calendar.utils.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name="user")
-@AllArgsConstructor @Getter @Setter @Builder
+@AllArgsConstructor @NoArgsConstructor @Getter @Setter @Builder
 public class User {
 	
 	@Id
