@@ -51,16 +51,16 @@ public class EventServiceImpl implements IEventService {
 		
 		if (oldEvent != null) {
 					
-			if(!uDay.equals(oldEvent.getDay())) {
+			if(!uDay.equals(oldEvent.getDay()) && uDay!=null) {
 				oldEvent.setDay(uDay);
 			}
-			if(!uBeginTime.equals(oldEvent.getBeginTime())) {
+			if(!uBeginTime.equals(oldEvent.getBeginTime()) && uBeginTime!=null) {
 				oldEvent.setBeginTime(uBeginTime);
 			}
-			if(!uEndTime.equals(oldEvent.getEndTime())) {
+			if(!uEndTime.equals(oldEvent.getEndTime()) && uEndTime!=null) {
 				oldEvent.setEndTime(uEndTime);
 			}
-			if(uStatus!=oldEvent.getStatus()) {
+			if(uStatus!=oldEvent.getStatus() && uStatus!=null) {
 				oldEvent.setStatus(uStatus);
 			}
 		}

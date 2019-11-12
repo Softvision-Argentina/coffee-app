@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxi.calendar.model.Event;
+import com.maxi.calendar.model.EventUserBody;
 import com.maxi.calendar.model.User;
 import com.maxi.calendar.service.EventServiceImpl;
 import com.maxi.calendar.service.IEventService;
@@ -106,18 +107,38 @@ public class EventController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
-	@PostMapping("addUser")
-	public ResponseEntity<?> addUserAtEvent(@RequestBody User aUser, @RequestBody Event aEvent) {
+//	@PostMapping("/addUser")
+//	public ResponseEntity<?> addUserAtEvent(@RequestBody User aUser, @RequestBody Event aEvent) {
+//		
+//		Event event = eventService.getEvent(aEvent.getId());
+//		User user = userService.getUser(aUser.getId());
+//		
+//		if ((event==null) || (event==null)) {		
+//			return new ResponseEntity<>(HttpStatus.OK);
+//		}
+//		
+//		event.getUsers().add(user);
+//		user.getEvents().add(event);
+//		eventService.insertUserAndEvent(event);		
+//		return new ResponseEntity<>("OK", HttpStatus.OK);
+//	}
+	
+	@PostMapping("/addUser")
+	public ResponseEntity<?> addUserAtEvent(@RequestBody Event userEvent) {
 		
-		Event event = eventService.getEvent(aEvent.getId());
-		User user = userService.getUser(aUser.getId());
+		//Event event = rawBody.getEvent();
+		List<User> user = userEvent.getUsers();
 		
-		if ((event==null) || (event==null)) {		
+		Event event = eventService.getEvent(userEvent.getId());
+		
+		User usuario = userService.getUser(user.get(0).getId());
+		//user = userService.getUser(user.get(0).getId());
+		
+		if ((event==null) || (user==null)) {		
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		
-		event.getUsers().add(user);
-		user.getEvents().add(event);
+		event.getUsers().add(usuario);
 		eventService.insertUserAndEvent(event);		
 		return new ResponseEntity<>("OK", HttpStatus.OK);
 	}
