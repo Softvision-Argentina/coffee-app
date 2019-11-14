@@ -1,10 +1,13 @@
 package com.todolist.dto;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "events")
@@ -23,6 +26,7 @@ public class Event implements Serializable {
     @NotNull
     @Column(name = "event_date")
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date eventDate;
 
     @NotEmpty
@@ -33,19 +37,19 @@ public class Event implements Serializable {
     @Column(name= "event_description")
     private String eventDescription;
 
-    //@ManyToMany(mappedBy = "events")
-    //private List<User> users;
+    @ManyToMany(mappedBy = "events")
+    private List<User> users;
 
     public Event() {
     }
 
-    public Event(Long id, String status, Date eventDate, String eventTitle, String eventDescription) {
+    public Event(Long id, String status, Date eventDate, String eventTitle, String eventDescription, List<User> users) {
         this.id = id;
         this.status = status;
         this.eventDate = eventDate;
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
-        //this.users = users;
+        this.users = users;
     }
 
     public Long getId() {
@@ -88,11 +92,11 @@ public class Event implements Serializable {
         this.eventDescription = eventDescription;
     }
 
-    //public List<User> getUsers() {
-      //  return users;
-    //}
+    public List<User> getUsers() {
+        return users;
+    }
 
-    //public void setUsers(List<User> users) {
-      //  this.users = users;
-    //}
+    public void setUsers(List<User> users) {
+       this.users = users;
+    }
 }

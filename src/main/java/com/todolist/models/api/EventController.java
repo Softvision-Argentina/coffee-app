@@ -21,35 +21,25 @@ public class EventController {
     @Qualifier(value = "EventDaoImpl")
     private IEventDao eventDao;
 
+    // Get all the events
     @GetMapping(value = "/events")
     public String getEvents(Model model) {
-        model.addAttribute("titulo", "Get all events");
+        model.addAttribute("title", "Get all events");
         model.addAttribute("events", eventDao.getAllEvents());
         return "events";
     }
 
-    //To show the form to add new events
+    //To show the form to add new events, we create an instance of the object
     @GetMapping(value = "/form")
     public String addEvent(Map<String, Object> model) {
         Event event = new Event();
         model.put("event", event);
-        model.put("titulo", "Add new task or Event");
+        model.put("title", "Add new task or Event");
         return "form";
     }
 
-    //In this case we take the object inserted from the form described above and save it with the method addNewEvent
-    // and return the view that implements all list of events, to add the new one
-    @PostMapping(value = "/form")
-    public String addNewEvent(@Valid Event event, BindingResult result, Model model) {
-        if(result.hasErrors()) {
-            model.addAttribute("titulo", "Add new task or Event");
-            return "form";
-        }
-        eventDao.saveNewEvent(event);
-        return "redirect:events";
-    }
-
-    @PatchMapping(value = "/events/{id}")
+    //Editing Event using get as a Requested method
+    @GetMapping(value = "/form/{id}")
     public String editEvent(@PathVariable(value = "id") Long id, Map<String, Object> model) {
         Event event = null;
 
@@ -63,7 +53,21 @@ public class EventController {
         return "form";
     }
 
-    @DeleteMapping (value = "/events/{id}")
+    //Add new event
+    //In this case we take the object inserted from the form described above and save it with the method addNewEvent
+    // and return the view that implements all events, to visualize the new one added
+    @PostMapping(value = "/form")
+    public String addNewEvent(@Valid Event event, BindingResult result, Model model) {
+        if(result.hasErrors()) {
+            model.addAttribute("title", "Add new task or Event");
+            return "form";
+        }
+        eventDao.saveNewEvent(event);
+        return "redirect:events";
+    }
+
+    //Delete Event
+    @GetMapping (value = "/events/{id}")
     public String deleteEvent(@PathVariable(value = "id") Long id) {
         if (id > 0) {
             eventDao.deleteEvent(id);

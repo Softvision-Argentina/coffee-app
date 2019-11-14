@@ -20,21 +20,21 @@ public class EventDaoImpl implements IEventDao {
         return em.createQuery("from Event").getResultList();
     }
 
-    // Method created to add new events
-    @Transactional //Without readOnly, because we want to be able to write in it
-    @Override
-    public void saveNewEvent(Event event) {
-        if(event.getId() != null && event.getId() > 0) {
-            em.merge(event);
-        } else {
-            em.persist(event);
-        }
-    }
-
     @Override
     @Transactional(readOnly = true)
     public Event findEvent(Long id) {
         return em.find(Event.class, id);
+    }
+
+    // Method created to add new events and to edit events already persisted
+    @Transactional //Without readOnly, because we want to be able to write in it
+    @Override
+    public void saveNewEvent(Event event) {
+        if(event.getId() != null && event.getId() > 0) {
+            em.merge(event); // edit event
+        } else {
+            em.persist(event); // insert and save new event
+        }
     }
 
     @Override
