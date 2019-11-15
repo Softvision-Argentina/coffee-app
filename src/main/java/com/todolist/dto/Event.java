@@ -6,8 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "events")
@@ -38,18 +37,28 @@ public class Event implements Serializable {
     private String eventDescription;
 
     @ManyToMany(mappedBy = "events")
-    private List<User> users;
+    private Set<User> users = new HashSet<>();
 
     public Event() {
     }
 
-    public Event(Long id, String status, Date eventDate, String eventTitle, String eventDescription, List<User> users) {
+    public Event(Long id, String status, Date eventDate, String eventTitle, String eventDescription) {
         this.id = id;
         this.status = status;
         this.eventDate = eventDate;
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
-        this.users = users;
+        //this.users = users;
+    }
+
+    public void addUser(User user){
+        user.getEvents().add(this);
+        users.add(user);
+    }
+
+    public void removeUser(User user){
+        users.remove(user);
+        user.getEvents().remove(this);
     }
 
     public Long getId() {
@@ -92,11 +101,11 @@ public class Event implements Serializable {
         this.eventDescription = eventDescription;
     }
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
        this.users = users;
     }
 }

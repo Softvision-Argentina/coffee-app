@@ -1,8 +1,9 @@
-/**package com.todolist.dto;
+package com.todolist.dto;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -14,29 +15,39 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private long id;
+    private Long id;
 
     private String firstName;
     private String lastName;
     private String email;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable (
             name = "Users_Events",
             joinColumns = { @JoinColumn(name = "user_id")},
-            inverseJoinColumns = { @JoinColumn(name = "event_id")}
+            inverseJoinColumns = { @JoinColumn(name = "event_id", referencedColumnName = "id")}
     )
-    private List<Event> event;
+    private Set<Event> events = new HashSet<>();
 
     public User() {
     }
 
-    public User(long id, String firstName, String lastName, String email, List<Event> event) {
+    public User(Long id, String firstName, String lastName, String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.event = event;
+    }
+
+    public void addEvent(Event event){
+        event.getUsers().add(this);
+        events.add(event);
+
+    }
+
+    public void removeEvent(Event event){
+        events.remove(event);
+        event.getUsers().remove(this);
     }
 
     public long getId() {
@@ -79,11 +90,12 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public List<Event> getEvent() {
-        return event;
+    public Set<Event> getEvents() {
+        return events;
     }
 
-    public void setEvent(List<Event> event) {
-        this.event = event;
+    public void setEvents(Set<Event> events) {
+        this.events = events;
     }
-} **/
+
+}
